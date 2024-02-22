@@ -1,0 +1,31 @@
+{
+  "name": "test-db-switch-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "topic.creation.default.partitions": "1",
+    "slot.name": "test_slot",
+    "topic.heartbeat.prefix": "__debezium-heartbeat",
+    "tombstones.on.delete": "false",
+    "topic.prefix": "test-server",
+    "heartbeat.action.query": "CREATE TABLE IF NOT EXISTS heart_beat_dbz ( id SERIAL PRIMARY KEY, t TIMESTAMP ); INSERT INTO heart_beat_dbz ( id, t ) VALUES ( 1, now() ) ON CONFLICT(id) DO UPDATE SET t=EXCLUDED.t;",
+    "topic.creation.default.replication.factor": "-1",
+    "database.initial.statements": "CREATE TABLE IF NOT EXISTS heart_beat_dbz ( id SERIAL PRIMARY KEY, t TIMESTAMP ); INSERT INTO heart_beat_dbz ( id, t ) VALUES ( 1, now() ) ON CONFLICT(id) DO UPDATE SET t=EXCLUDED.t;",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "database.tcpKeepAlive": "true",
+    "database.dbname": "postgres",
+    "database.user": "postgres",
+    "slot.drop.on.stop": "false",
+    "heartbeat.interval.ms": "5000",
+    "database.port": "5432",
+    "plugin.name": "pgoutput",
+    "topic.creation.enable": "true",
+    "key.converter.schemas.enable": "false",
+    "database.hostname": "postgres-old",
+    "database.hostname.comment": "JSON does not allow comment, when you deploy for postgres-new, do not forget to update database.hostname",
+    "database.password": "postgres",
+    "name": "test-db-switch-connector",
+    "value.converter.schemas.enable": "false",
+    "snapshot.mode": "never"
+  }
+}
